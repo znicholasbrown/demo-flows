@@ -1,1 +1,1 @@
-prefect = {extras = ["google", "twitter", "viz"],version = "*"}
+prefect
