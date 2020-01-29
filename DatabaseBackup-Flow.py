@@ -1,7 +1,8 @@
 import prefect
 import time
 from prefect import Flow, Task
-from datetime import timedelta
+from datetime import timedelta, timezone, datetime
+from prefect.environments.storage import Docker
 from prefect.schedules import IntervalSchedule
 
 class ValidateConnection(Task):
@@ -26,18 +27,13 @@ schedule = IntervalSchedule(interval=timedelta(minutes=5))
 with Flow("Create Database Backup", schedule=schedule) as DatabaseBackupFlow:
     print(f"Running on Prefect v{prefect.__version__}")
     validate = ValidateConnection()
-    create = CreateDatabaseBackup()
-    migrate = MigrateDatabaseBackup()
+    create = CreateDatabaseBackup()(upstream_tasks=[validate])
+    migrate = MigrateDatabaseBackup()(upstream_tasks=[create])
 
-    validate()
-    create(upstream_tasks=[validate])
-    migrate(upstream_tasks=[create])
-
-DatabaseBackupFlow.deploy(
-    "DevOps",
-    base_image="python:3.7",
+DatabaseBackupFlow.storage = Docker(base_image="python:3.7",
     python_dependencies=[],
     registry_url="znicholasbrown",
     image_name="prefect_flow",
-    image_tag="demo-database-backup-flow",
-)
+    image_tag="database-backup-flow")
+    
+DatabaseBackupFlow.register(project_name="Flow Schematics")
