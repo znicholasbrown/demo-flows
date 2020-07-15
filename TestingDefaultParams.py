@@ -22,7 +22,3 @@ flow.storage = GitHub(
     path="TestingDefaultParams.py",
     secrets=["NICHOLAS_GITHUB_ACCESS"],
 )
-
-flow.environment = LocalEnvironment(labels=[])
-
-flow.register(project_name="Flow Schematics")
