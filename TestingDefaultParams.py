@@ -1,8 +1,7 @@
 import prefect
 from prefect import Flow, task, Parameter
-from prefect
 from prefect.environments.storage import GitHub
-
+from prefect.environments import LocalEnvironment
 
 
 @task
@@ -19,9 +18,11 @@ with Flow("Testing Default Parameters") as flow:
 
 
 flow.storage = GitHub(
-    repo="org/repo",
-    path="flows/my_flow.py",
-    secrets=["GITHUB_ACCESS_TOKEN"] 
+    repo="znicholasbrown/demo-flows",
+    path="TestingDefaultParams.py",
+    secrets=["NICHOLAS_GITHUB_ACCESS"],
 )
+
+flow.environment = LocalEnvironment(labels=[])
 
 flow.register(project_name="Flow Schematics")
