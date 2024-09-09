@@ -35,7 +35,7 @@ def create_idea_image(idea: str, sleep_time: float = 1.0):
     image_url = image_map[idea.split(" ")[0]]
     
     create_image_artifact(
-        key=f"idea-image-{hash(idea)}",
+        key=f"idea-image-{idea}",
         image_url=image_url,
         description=f"Generated image for idea: {idea}"
     )
@@ -74,7 +74,7 @@ def create_idea_details(idea: str, sleep_time: float = 0.75):
     """
     
     create_markdown_artifact(
-        key=f"idea-details-{hash(idea)}",
+        key=f"idea-details-{idea}",
         markdown=details,
         description=f"Detailed setup for idea: {idea}"
     )
@@ -96,7 +96,7 @@ def NarrativeSparkGenerator(subject: str, num_ideas: int = 3, sleep_range: tuple
     
     ideas_markdown = "\n".join([f"{i+1}. {idea}" for i, idea in enumerate(ideas)])
     create_markdown_artifact(
-        key=f"narrative-sparks-{hash(subject)}",
+        key=f"narrative-sparks-{subject}",
         markdown=f"## Narrative Sparks for '{subject}'\n\n{ideas_markdown}",
         description=f"Generated narrative sparks for subject: {subject}"
     )
