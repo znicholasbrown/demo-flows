@@ -4,7 +4,7 @@ import time
 from random import uniform, choice
 
 image_map = {
-    "Science Fiction": "https://cdn.midjourney.com/afe0c1d4-2645-4729-82d6-7a5b4dcf8600/0_2.png",
+    "Science_Fiction": "https://cdn.midjourney.com/afe0c1d4-2645-4729-82d6-7a5b4dcf8600/0_2.png",
     "Fantasy": "https://cdn.midjourney.com/5b9b6b22-cc57-43a0-a2f4-e57ca4948a13/0_1.png",
     "Mystery": "https://cdn.midjourney.com/7f9fb32b-9742-44b8-9ae4-78864d12c703/0_0.png",
     "Romance": "https://cdn.midjourney.com/90f3ce8d-6285-4c44-8d24-6833efd3c0f3/0_2.png",
@@ -17,7 +17,7 @@ def generate_idea(subject: str, sleep_time: float = 0.5):
     logger.info(f"Generating idea for subject: {subject}")
     time.sleep(sleep_time)
     
-    genres = ["Science Fiction", "Fantasy", "Mystery", "Romance", "Horror"]
+    genres = ["Science_Fiction", "Fantasy", "Mystery", "Romance", "Horror"]
     settings = ["Ancient Civilization", "Dystopian Future", "Magical Kingdom", "Space Colony", "Underwater City"]
     conflicts = ["Man vs. Nature", "Good vs. Evil", "Self-Discovery", "Technological Dilemma", "Moral Quandary"]
     
