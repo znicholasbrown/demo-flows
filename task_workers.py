@@ -1,4 +1,4 @@
-from prefect import task
+from prefect import task, flow
 import asyncio
 
 @task
@@ -42,6 +42,35 @@ def oats():
     pass
 
 
+@task
+async def legumes():
+    green_beans.submit().wait()
+    sweet_peas.submit().wait()
+    soy.submit().wait()
+
+
+@task
+async def grains():
+    wheat.submit().wait()
+    rice.submit().wait()
+    barley.submit().wait()
+    oats.submit().wait()
+
+
+@task
+async def vegetables():
+    corn.submit().wait()
+    tomatoes.submit().wait()
+    potatoes.submit().wait()
+    
+
+@flow
+async def produce():
+    legumes.submit().wait()
+    grains.submit().wait()
+    vegetables.submit().wait()
+
+
 async def main():
     await asyncio.gather(
         corn.serve(),
@@ -53,7 +82,8 @@ async def main():
         soy.serve(),
         rice.serve(),
         barley.serve(),
-        oats.serve()
+        oats.serve(),
+        produce()
     )
 
 if __name__ == "__main__":
