@@ -71,6 +71,10 @@ async def produce():
     vegetables.submit().wait()
 
 
+async def serve_produce():
+    # Run the synchronous Flow.serve in a separate thread since these signatures are different
+    await asyncio.to_thread(produce.serve, name='local-produce')
+
 async def main():
     await asyncio.gather(
         corn.serve(),
@@ -83,7 +87,7 @@ async def main():
         rice.serve(),
         barley.serve(),
         oats.serve(),
-        produce()
+        serve_produce()
     )
 
 if __name__ == "__main__":
