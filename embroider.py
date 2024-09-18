@@ -21,7 +21,7 @@ async def embroider():
     ]
 
     for task_to_submit in tasks:
-        states.append(task_to_submit.delay())
+        states.append(task_to_submit.submit())
 
     resolved_states = wait(states)
 
