@@ -12,7 +12,7 @@ def simulate_failure(failure_rate=1):
     if failure_chance < failure_rate:
         raise Exception("Failed")
 
-@task(retries=3, retry_jitter_factor=0.2, retry_delay_seconds=2)
+@task(retries=3, retry_jitter_factor=0.2)
 async def thread_needle():
     logger = get_run_logger()
     logger.info("Attempting to thread the needle")
@@ -34,7 +34,7 @@ async def thread_needle():
     )
     logger.info("Needle threaded")
 
-@task(retries=2, retry_jitter_factor=0.1, retry_delay_seconds=3)
+@task(retries=2, retry_jitter_factor=0.1)
 async def choose_fabric():
     logger = get_run_logger()
     logger.info("Selecting fabric for embroidery")
@@ -78,7 +78,7 @@ async def backstitch():
     )
     logger.info("Backstitch completed")
 
-@task(retries=2, retry_jitter_factor=0.15, retry_delay_seconds=10)
+@task(retries=2, retry_jitter_factor=0.15)
 async def french_knot():
     logger = get_run_logger()
     logger.info("Creating French knots")
