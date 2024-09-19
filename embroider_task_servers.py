@@ -5,7 +5,7 @@ from random import uniform
 from prefect import get_run_logger
 from prefect.artifacts import create_markdown_artifact
 
-def simulate_failure(failure_rate=1):
+def simulate_failure(failure_rate=0.8):
     logger = get_run_logger()
     failure_chance = uniform(0, 1)
     logger.info(f"Simulating task failure (failure rate: {failure_rate}) - (failure chance: {failure_chance})")
