@@ -15,7 +15,10 @@ pull:
 deployments:
 - # base metadata
   name: 🤌🤌
-  version: 1.0.0
+  version: 1.0.1
+  version_info:
+    version: 1.0.1
+    branch: main
   tags: []
   description: null
   schedule: null
