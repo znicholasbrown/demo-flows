@@ -123,7 +123,10 @@ def logs():
 
     logger.debug(rainbow_wave(lorem_ipsum))
 
-    palette_test_cases()
+# 4600
+    for i in range(100):
+        logger.info(f"Message {i}")
+        palette_test_cases()
 
 if __name__ == "__main__":
     logs()

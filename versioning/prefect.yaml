@@ -1,0 +1,31 @@
+prefect-version: null
+name: null
+
+# preparation steps
+build: null
+push: null
+
+# runtime steps
+pull:
+- prefect.deployments.steps.git_clone:
+    repository: git@github.com:znicholasbrown/demo-flows.git
+    branch: main
+
+# deployment configurations
+deployments:
+- # base metadata
+  name: 🤌🤌
+  version: 1.0.0
+  tags: []
+  description: null
+  schedule: null
+
+  # flow-specific fields
+  entrypoint: versioning.py:versiano_reggiano
+  parameters: {}
+
+  # infra-specific fields
+  work_pool:
+    name: managed
+    work_queue_name: secondary
+    job_variables: {}

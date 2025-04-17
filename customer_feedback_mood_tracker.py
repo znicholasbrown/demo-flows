@@ -73,7 +73,7 @@ def ProcessFeedbackNode(node_number: int, sleep_range: tuple[float, float]):
     return result
 
 @flow
-def CustomerFeedbackMoodTracker(num_nodes: int = 4, node_sleep_range: tuple[float, float] = (0.5, 2.0)):
+def CustomerFeedbackMoodTracker(num_nodes: int = 50, node_sleep_range: tuple[float, float] = (0.5, 10.0)):
     logger = get_run_logger()
     logger.info(f"Starting CustomerFeedbackMoodTracker with {num_nodes} nodes")
     

@@ -26,10 +26,7 @@ async def embroider():
     resolved_states = wait(states)
 
     for state in resolved_states[0]:
-        if state.is_completed():
-            print(f"Task {state.task.name} completed successfully")
-        else:
-            print(f"Task {state.task.name} failed")
+        print(state)
     
 
 if __name__ == "__main__":
