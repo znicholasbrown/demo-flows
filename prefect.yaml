@@ -19,7 +19,7 @@ deployments:
   version_info:
     version: 1.0.4
     branch: main
-  tags: []
+  tags: ['red', 'green', 'blue']
   description: null
   schedule: null
 
