@@ -21,7 +21,7 @@ deployments:
   schedule: null
 
   # flow-specific fields
-  entrypoint: versioning.py:versiano_reggiano
+  entrypoint: versiano_reggiano.py:versiano_reggiano
   parameters: {}
 
   # infra-specific fields
