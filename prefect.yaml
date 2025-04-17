@@ -15,11 +15,11 @@ pull:
 deployments:
 - # base metadata
   name: 🤌🤌
-  version: 1.0.4
+  version: 1.0.5
   version_info:
-    version: 1.0.4
-    branch: main
-  tags: ['orange', 'purple', 'green']
+    version: 1.0.5
+    branch: dev
+  tags: ['cyan', 'purple', 'indigo']
   description: null
   schedule: null
 
@@ -29,6 +29,6 @@ deployments:
 
   # infra-specific fields
   work_pool:
-    name: we
-    work_queue_name: default
+    name: managed
+    work_queue_name: secondary
     job_variables: {}
