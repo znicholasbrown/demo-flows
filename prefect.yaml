@@ -15,9 +15,9 @@ pull:
 deployments:
 - # base metadata
   name: 🤌🤌
-  version: 1.0.3
+  version: 1.0.4
   version_info:
-    version: 1.0.3
+    version: 1.0.4
     branch: main
   tags: []
   description: null
@@ -29,6 +29,6 @@ deployments:
 
   # infra-specific fields
   work_pool:
-    name: managed
+    name: we
     work_queue_name: default
     job_variables: {}
