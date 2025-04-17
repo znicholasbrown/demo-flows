@@ -30,5 +30,5 @@ deployments:
   # infra-specific fields
   work_pool:
     name: managed
-    work_queue_name: secondary
+    work_queue_name: default
     job_variables: {}
