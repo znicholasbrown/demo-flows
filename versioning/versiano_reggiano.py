@@ -11,12 +11,18 @@ def knead_dough():
     time.sleep(random.uniform(5, 8))
     logger.info("Perfetto! The dough is ready")
 
+    if random.uniform(0, 1) < 0.1:
+        raise ValueError("The dough is too hard! 💔")
+
 @task
 def grate_parmesan():
     logger = get_run_logger()
     logger.info("🧀 Grating the finest Parmigiano-Reggiano...")
     time.sleep(random.uniform(2, 4))
     logger.info("Mamma mia! That's some good cheese")
+
+    if random.uniform(0, 1) < 0.1:
+        raise ValueError("The cheese is too salty! 💔")
 
 @task
 def boil_pasta():
@@ -25,12 +31,18 @@ def boil_pasta():
     time.sleep(random.uniform(8, 12))
     logger.info("Pasta is perfectly cooked!")
 
+    if random.uniform(0, 1) < 0.1:
+        raise ValueError("The pasta is overcooked! 💔")
+
 @task
 def make_sauce():
     logger = get_run_logger()
     logger.info("🍅 Simmering the sauce with love...")
     time.sleep(random.uniform(10, 15))
     logger.info("Sauce is ready to make Nonna proud")
+
+    if random.uniform(0, 1) < 0.1:
+        raise ValueError("The sauce is burnt! 💔")
 
 @flow
 def versiano_reggiano():
