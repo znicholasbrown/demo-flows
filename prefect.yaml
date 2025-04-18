@@ -15,11 +15,11 @@ pull:
 deployments:
 - # base metadata
   name: 🤌🤌
-  version: 1.0.5
+  version: 1.1.0
   version_info:
-    version: 1.0.5
+    version: 1.1.0
     branch: dev
-  tags: ['cyan', 'purple', 'indigo']
+  tags: ['pasta', 'parmesan', 'italian']
   description: null
   schedule: null
 
