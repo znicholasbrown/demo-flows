@@ -41,7 +41,7 @@ deployments:
 
     # infra-specific fields
     work_pool:
-      name: managed
+      name: nicholas-managed-staging
       work_queue_name: default
       job_variables:
         pip_packages: ["beautifulsoup4"]
