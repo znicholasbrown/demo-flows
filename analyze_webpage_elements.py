@@ -58,13 +58,14 @@ def create_analysis_artifact(elements: List[ElementAnalysis], url: AnyHttpUrl) -
     markdown_content = f"# Element Analysis for {url}\n\n"
     markdown_content += "## 10 large elements\n\n"
     
+    total_size = sum(e.size for e in elements)
+    
     for i, element in enumerate(elements[:10], 1):
+        percentage = round((element.size / total_size) * 100)
         markdown_content += f"### {i}. `{element.tag}`\n"
-        markdown_content += f"**Size**: {format_number(element.size)} characters ({format_size(element.size)})\n"
+        markdown_content += f"**Size**: {format_number(element.size)} characters ({format_size(element.size)}) - {percentage}% of total\n"
         markdown_content += f"**Text excerpt**: {element.content}\n\n"
     
-    # Add total size summary
-    total_size = sum(e.size for e in elements)
     markdown_content += "## Summary\n"
     markdown_content += f"**Elements analyzed**: {format_number(len(elements))}\n"
     markdown_content += f"**Total content size**: {format_number(total_size)} characters ({format_size(total_size)})\n"
@@ -81,7 +82,6 @@ async def analyze_webpage(url: AnyHttpUrl = AnyHttpUrl("https://prefect.io")) ->
     soup = parse_html(html_content)
     elements = analyze_elements(soup)
     
-    # Create the analysis artifact
     create_analysis_artifact(elements, url)
     
     return elements
