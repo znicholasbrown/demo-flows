@@ -69,11 +69,7 @@ def create_analysis_artifact(elements: List[ElementAnalysis], url: AnyHttpUrl) -
     markdown_content += f"**Elements analyzed**: {format_number(len(elements))}\n"
     markdown_content += f"**Total content size**: {format_number(total_size)} characters ({format_size(total_size)})\n"
     
-    create_markdown_artifact(
-        key="webpage-analysis",
-        markdown=markdown_content,
-        description=f"Analysis of largest elements in {url}"
-    )
+    return markdown_content
 
 @flow
 async def analyze_webpage(url: AnyHttpUrl = AnyHttpUrl("https://prefect.io")) -> List[ElementAnalysis]:
@@ -82,9 +78,13 @@ async def analyze_webpage(url: AnyHttpUrl = AnyHttpUrl("https://prefect.io")) ->
     elements = analyze_elements(soup)
     
     # Create the analysis artifact
-    create_analysis_artifact(elements, url)
+    markdown_content = create_analysis_artifact(elements, url)
     
-    return elements
+    create_markdown_artifact(
+        key="webpage-analysis",
+        markdown=markdown_content,
+        description=f"Analysis of largest elements in {url}"
+    )
 
 if __name__ == "__main__":
     import asyncio
