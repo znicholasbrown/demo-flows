@@ -45,4 +45,4 @@ deployments:
       work_queue_name: default
       job_variables: 
         pip_packages:
-          - bs4
+          - beautifulsoup4
