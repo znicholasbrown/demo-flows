@@ -13,19 +13,34 @@ pull:
 
 # deployment configurations
 deployments:
-- # base metadata
-  name: 🤌🤌
-  version_type: vcs:git
-  tags: ['pasta', 'parmesan', 'italian', 'pasta-parmesan']
-  description: null
-  schedule: null
+  - name: 🤌🤌
+    version_type: vcs:git
+    tags: ['pasta', 'parmesan', 'italian', 'pasta-parmesan']
+    description: null
+    schedule: null
 
-  # flow-specific fields
-  entrypoint: versioning/versiano_reggiano.py:versiano_reggiano
-  parameters: {}
+    # flow-specific fields
+    entrypoint: versioning/versiano_reggiano.py:versiano_reggiano
+    parameters: {}
 
-  # infra-specific fields
-  work_pool:
-    name: managed
-    work_queue_name: secondary
-    job_variables: {}
+    # infra-specific fields
+    work_pool:
+      name: managed
+      work_queue_name: secondary
+      job_variables: {}
+
+  - name: default
+    version_type: vcs:git
+    tags: ['scraper', 'beautifulsoup']
+    description: Scrape a webpage and size-rank the elements
+    schedule: null
+
+    # flow-specific fields
+    entrypoint: analyze_webpage_elements.py:analyze_webpage
+    parameters: {}
+
+    # infra-specific fields
+    work_pool:
+      name: managed
+      work_queue_name: default
+      job_variables: {}

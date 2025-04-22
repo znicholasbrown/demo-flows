@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 import httpx
 from typing import List
 from dataclasses import dataclass
-from urllib.parse import urlparse
+from pydantic import AnyHttpUrl
 from prefect.artifacts import create_markdown_artifact
 
 def format_number(num: int) -> str:
@@ -25,9 +25,9 @@ class ElementAnalysis:
     content: str
 
 @task
-async def fetch_webpage(url: str) -> str:
+async def fetch_webpage(url: AnyHttpUrl) -> str:
     async with httpx.AsyncClient() as client:
-        response = await client.get(url, follow_redirects=True)
+        response = await client.get(str(url), follow_redirects=True)
         response.raise_for_status()
         return response.text
 
@@ -53,7 +53,7 @@ def analyze_elements(soup: BeautifulSoup) -> List[ElementAnalysis]:
     return sorted(elements, key=lambda x: x.size, reverse=True)
 
 @task
-def create_analysis_artifact(elements: List[ElementAnalysis], url: str) -> None:
+def create_analysis_artifact(elements: List[ElementAnalysis], url: AnyHttpUrl) -> None:
     """Create a markdown artifact with the analysis results."""
     markdown_content = f"# Element Analysis for {url}\n\n"
     markdown_content += "## 10 large elements\n\n"
@@ -76,11 +76,7 @@ def create_analysis_artifact(elements: List[ElementAnalysis], url: str) -> None:
     )
 
 @flow
-async def analyze_webpage(url: str) -> List[ElementAnalysis]:
-    parsed_url = urlparse(url)
-    if not all([parsed_url.scheme, parsed_url.netloc]):
-        raise ValueError("Invalid URL provided")
-    
+async def analyze_webpage(url: AnyHttpUrl) -> List[ElementAnalysis]:
     html_content = await fetch_webpage(url)
     soup = parse_html(html_content)
     elements = analyze_elements(soup)
@@ -94,7 +90,7 @@ if __name__ == "__main__":
     import asyncio
     
     async def main():
-        url = "https://prefect.io"
+        url = AnyHttpUrl("https://prefect.io")
         await analyze_webpage(url)
     
     asyncio.run(main())
