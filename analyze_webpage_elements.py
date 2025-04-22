@@ -76,7 +76,7 @@ def create_analysis_artifact(elements: List[ElementAnalysis], url: AnyHttpUrl) -
     )
 
 @flow
-async def analyze_webpage(url: AnyHttpUrl) -> List[ElementAnalysis]:
+async def analyze_webpage(url: AnyHttpUrl = AnyHttpUrl("https://prefect.io")) -> List[ElementAnalysis]:
     html_content = await fetch_webpage(url)
     soup = parse_html(html_content)
     elements = analyze_elements(soup)
