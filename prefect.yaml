@@ -44,5 +44,4 @@ deployments:
       name: managed
       work_queue_name: default
       job_variables:
-        pip_packages:
-          - beautifulsoup4
+        pip_packages: ["beautifulsoup4"]
