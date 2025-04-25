@@ -37,7 +37,10 @@ deployments:
 
     # flow-specific fields
     entrypoint: analyze_webpage_elements.py:analyze_webpage
-    parameters: {}
+    parameters: {
+      "url": "https://prefect.io/pricing"
+    }
+    enforce_parameter_schema: false
 
     # infra-specific fields
     work_pool:
