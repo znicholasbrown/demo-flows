@@ -30,7 +30,7 @@ deployments:
       job_variables: {}
 
   - name: default
-    version_type: vcs:git
+    version_type: vcs:github
     tags: ['scraper', 'beautifulsoup']
     description: Scrape a webpage and size-rank the elements
     schedule: null
