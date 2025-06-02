@@ -43,8 +43,7 @@ def prepare_customer_features(fail=False):
     time.sleep(3)
     return "Features prepared"
 
-@materialize(customer_segments,
-            asset_deps=[staged_customer_data])
+@materialize(customer_segments)
 def train_customer_segments(features, fail=False):
     """Train customer segmentation model"""
     if fail:
