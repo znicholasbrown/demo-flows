@@ -1,6 +1,5 @@
 from prefect import flow, task
 from prefect.assets import materialize
-import time
 from assets import (
     raw_customer_data,
     raw_product_data,
@@ -15,14 +14,12 @@ from assets import (
             asset_deps=[raw_customer_data])
 def stage_customer_data():
     """Stage customer data from raw S3 to Snowflake"""
-    time.sleep(2)
     return "Customer data staged successfully"
 
 @materialize(staged_product_data,
             asset_deps=[raw_product_data])
 def stage_product_data():
     """Stage product data from raw S3 to Snowflake"""
-    time.sleep(2)
     return "Product data staged successfully"
 
 @flow(name="Data Ingestion")
@@ -40,7 +37,6 @@ def prepare_customer_features(fail=False):
     """Prepare features for customer segmentation"""
     if fail:
         raise Exception("Failed to prepare features")
-    time.sleep(3)
     return "Features prepared"
 
 @materialize(customer_segments)
@@ -48,7 +44,6 @@ def train_customer_segments(features, fail=False):
     """Train customer segmentation model"""
     if fail:
         raise Exception("Failed to train customer segments")
-    time.sleep(5)
     return "Model trained successfully"
 
 @flow(name="ML Training")
@@ -68,7 +63,6 @@ def generate_analytics_report(fail=False):
     """Generate analytics report using both analytics and ML outputs"""
     if fail:
         raise Exception("Failed to generate analytics report")
-    time.sleep(2)
     return "Report generated"
 
 @materialize(data_quality_metrics,
@@ -81,7 +75,6 @@ def run_quality_checks(fail=False):
     """Run quality checks on all key data assets"""
     if fail:
         raise Exception("Failed to run quality checks")
-    time.sleep(3)
     return "Quality checks completed"
 
 @flow(name="Analytics and Quality Checks")
