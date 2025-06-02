@@ -107,3 +107,7 @@ def run_pipeline(fail_ml=False, fail_analytics=False, fail_quality=False):
         "ml": ml_results,
         "analytics": analytics_results
     }
+
+
+if __name__ == "__main__":
+    run_pipeline()
