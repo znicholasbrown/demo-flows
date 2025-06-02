@@ -17,7 +17,7 @@ deployments:
     version_type: vcs:git
     tags: ['pasta', 'parmesan', 'italian', 'pasta-parmesan']
     description: null
-    schedule: null
+    schedules: []
 
     # flow-specific fields
     entrypoint: versioning/versiano_reggiano.py:versiano_reggiano
@@ -47,3 +47,41 @@ deployments:
       work_queue_name: default
       job_variables:
         pip_packages: ["beautifulsoup4"]
+
+  # assets
+  - name: default
+    version: null
+    tags: ['ml', 'assets']
+    concurrency_limit: null
+    description: Flow to train ML models
+    entrypoint: assets/main.py:train_models
+    parameters: {}
+    work_pool:
+      name: nicholas
+      work_queue_name: default
+      job_variables: {}
+    schedules: []
+  - name: default
+    version: null
+    tags: ['analytics', 'assets']
+    concurrency_limit: null
+    description: Flow to run analytics and quality checks
+    entrypoint: assets/main.py:run_analytics_and_quality
+    parameters: {}
+    work_pool:
+      name: nicholas
+      work_queue_name: default
+      job_variables: {}
+    schedules: []
+  - name: default
+    version: null
+    tags: ['assets']
+    concurrency_limit: null
+    description: Main pipeline flow
+    entrypoint: assets/main.py:run_pipeline
+    parameters: {}
+    work_pool:
+      name: nicholas
+      work_queue_name: default
+      job_variables: {}
+    schedules: []

@@ -29,7 +29,7 @@ deployments:
   parameters: {}
   work_pool:
     name: nicholas-managed-staging
-    work_queue_name: null
+    work_queue_name: default
     job_variables: {}
   schedules: []
 - name: default
@@ -41,7 +41,7 @@ deployments:
   parameters: {}
   work_pool:
     name: nicholas-managed-staging
-    work_queue_name: null
+    work_queue_name: default
     job_variables: {}
   schedules: []
 - name: default
@@ -53,6 +53,6 @@ deployments:
   parameters: {}
   work_pool:
     name: nicholas-managed-staging
-    work_queue_name: null
+    work_queue_name: default
     job_variables: {}
   schedules: []
