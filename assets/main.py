@@ -36,23 +36,27 @@ from assets import (
 #     }
 
 @task(asset_deps=[staged_customer_data])
-def prepare_customer_features():
+def prepare_customer_features(fail=False):
     """Prepare features for customer segmentation"""
+    if fail:
+        raise Exception("Failed to prepare features")
     time.sleep(3)
     return "Features prepared"
 
 @materialize(customer_segments,
             asset_deps=[staged_customer_data])
-def train_customer_segments(features):
+def train_customer_segments(features, fail=False):
     """Train customer segmentation model"""
+    if fail:
+        raise Exception("Failed to train customer segments")
     time.sleep(5)
     return "Model trained successfully"
 
 @flow(name="ML Training")
-def train_models():
+def train_models(fail=False):
     """Flow to train ML models"""
-    features = prepare_customer_features()
-    model_result = train_customer_segments(features)
+    features = prepare_customer_features(fail)
+    model_result = train_customer_segments(features, fail)
     return {
         "model_training": model_result
     }
@@ -61,8 +65,10 @@ def train_models():
     customer_analytics,
     customer_segments
 ])
-def generate_analytics_report():
+def generate_analytics_report(fail=False):
     """Generate analytics report using both analytics and ML outputs"""
+    if fail:
+        raise Exception("Failed to generate analytics report")
     time.sleep(2)
     return "Report generated"
 
@@ -72,27 +78,29 @@ def generate_analytics_report():
                 staged_product_data,
                 customer_segments
             ])
-def run_quality_checks():
+def run_quality_checks(fail=False):
     """Run quality checks on all key data assets"""
+    if fail:
+        raise Exception("Failed to run quality checks")
     time.sleep(3)
     return "Quality checks completed"
 
 @flow(name="Analytics and Quality Checks")
-def run_analytics_and_quality():
+def run_analytics_and_quality(fail_report=False, fail_quality=False):
     """Flow to run analytics and quality checks"""
-    report = generate_analytics_report()
-    quality = run_quality_checks()
+    report = generate_analytics_report(fail_report)
+    quality = run_quality_checks(fail_quality)
     return {
         "analytics": report,
         "quality": quality
     }
 
 @flow(name="Main Pipeline")
-def run_pipeline():
+def run_pipeline(fail_ml=False, fail_analytics=False, fail_quality=False):
     """Main pipeline flow that orchestrates all sub-flows"""
     # staging_results = ingest_and_stage_data()
-    ml_results = train_models()
-    analytics_results = run_analytics_and_quality()
+    ml_results = train_models(fail_ml)
+    analytics_results = run_analytics_and_quality(fail_analytics, fail_quality)
     
     return {
         # "staging": staging_results,
