@@ -11,29 +11,29 @@ from assets import (
     data_quality_metrics
 )
 
-# @materialize(staged_customer_data, 
-#             asset_deps=[raw_customer_data])
-# def stage_customer_data():
-#     """Stage customer data from raw S3 to Snowflake"""
-#     time.sleep(2)
-#     return "Customer data staged successfully"
+@materialize(staged_customer_data, 
+            asset_deps=[raw_customer_data])
+def stage_customer_data():
+    """Stage customer data from raw S3 to Snowflake"""
+    time.sleep(2)
+    return "Customer data staged successfully"
 
-# @materialize(staged_product_data,
-#             asset_deps=[raw_product_data])
-# def stage_product_data():
-#     """Stage product data from raw S3 to Snowflake"""
-#     time.sleep(2)
-#     return "Product data staged successfully"
+@materialize(staged_product_data,
+            asset_deps=[raw_product_data])
+def stage_product_data():
+    """Stage product data from raw S3 to Snowflake"""
+    time.sleep(2)
+    return "Product data staged successfully"
 
-# @flow(name="Data Ingestion")
-# def ingest_and_stage_data():
-#     """Flow to ingest and stage raw data"""
-#     customer_result = stage_customer_data()
-#     product_result = stage_product_data()
-#     return {
-#         "customer_staging": customer_result,
-#         "product_staging": product_result
-#     }
+@flow(name="Data Ingestion")
+def ingest_and_stage_data():
+    """Flow to ingest and stage raw data"""
+    customer_result = stage_customer_data()
+    product_result = stage_product_data()
+    return {
+        "customer_staging": customer_result,
+        "product_staging": product_result
+    }
 
 @task(asset_deps=[staged_customer_data])
 def prepare_customer_features(fail=False):

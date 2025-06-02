@@ -85,3 +85,15 @@ deployments:
       work_queue_name: default
       job_variables: {}
     schedules: []
+  - name: default
+    version: null
+    tags: ['assets']
+    concurrency_limit: null
+    description: Data Ingestion
+    entrypoint: assets/main.py:ingest_and_stage_data
+    parameters: {}
+    work_pool:
+      name: nicholas
+      work_queue_name: default
+      job_variables: {}
+    schedules: []
