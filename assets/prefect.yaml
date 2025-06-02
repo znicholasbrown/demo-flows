@@ -15,14 +15,14 @@ push: null
 # pull section allows you to provide instructions for cloning this project in remote locations
 pull:
 - prefect.deployments.steps.git_clone:
-    repository: https://github.com/znicholasbrown/demo-flows.git
+    repository: https://github.com/znicholasbrown/demo-flows.git/assets
     branch: main
 
 # the deployments section allows you to provide configuration for deploying flows
 deployments:
 - name: default
   version: null
-  tags: []
+  tags: ['ml', 'assets']
   concurrency_limit: null
   description: Flow to train ML models
   entrypoint: main.py:train_models
@@ -34,7 +34,7 @@ deployments:
   schedules: []
 - name: default
   version: null
-  tags: []
+  tags: ['analytics', 'assets']
   concurrency_limit: null
   description: Flow to run analytics and quality checks
   entrypoint: main.py:run_analytics_and_quality
@@ -46,7 +46,7 @@ deployments:
   schedules: []
 - name: default
   version: null
-  tags: []
+  tags: ['assets']
   concurrency_limit: null
   description: Main pipeline flow
   entrypoint: main.py:run_pipeline
