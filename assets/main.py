@@ -12,12 +12,14 @@ from assets import (
 )
 
 @materialize(staged_customer_data, 
+             by="fivetran",
             asset_deps=[raw_customer_data])
 def stage_customer_data():
     """Stage customer data from raw S3 to Snowflake"""
     return "Customer data staged successfully"
 
 @materialize(staged_product_data,
+             by="fivetran",
             asset_deps=[raw_product_data])
 def stage_product_data():
     """Stage product data from raw S3 to Snowflake"""
@@ -33,14 +35,14 @@ def ingest_and_stage_data():
         "product_staging": product_result
     }
 
-@task(asset_deps=[staged_customer_data])
+@task(asset_deps=[staged_customer_data], by="dbt")
 def prepare_customer_features(fail=False):
     """Prepare features for customer segmentation"""
     if fail:
         raise Exception("Failed to prepare features")
     return "Features prepared"
 
-@materialize(customer_segments)
+@materialize(customer_segments, by="vertex_ai")
 def train_customer_segments(features, fail=False):
     """Train customer segmentation model"""
     if fail:
@@ -56,10 +58,8 @@ def train_models(fail=False):
         "model_training": model_result
     }
 
-@task(asset_deps=[
-    customer_analytics,
-    customer_segments
-])
+@task(asset_deps=[customer_analytics,
+                  customer_segments])
 def get_analytics(fail=False):
     """Get analytics report using both analytics and ML outputs"""
     if fail:
@@ -67,10 +67,9 @@ def get_analytics(fail=False):
     return "Report generated"
 
 @materialize(data_quality_metrics,
-            asset_deps=[
-                staged_customer_data,
-                staged_product_data,
-            ])
+            asset_deps=[staged_customer_data,
+                        staged_product_data],
+            by="great_expectations")
 def run_quality_checks(analytics, fail=False):
     """Run quality checks on all key data assets"""
     if fail:

@@ -8,7 +8,6 @@ raw_customer_data = Asset(
         description="Unprocessed customer transaction data from source systems",
         owners=["nicholas", "kevin-g"],
         url="https://prefect.io",
-        by="fivetran"
     )
 )
 
@@ -19,7 +18,6 @@ raw_product_data = Asset(
         description="Source product catalog data including pricing and inventory",
         owners=["nicholas", "kevin-g"],
         url="https://prefect.io",
-        by="fivetran"
     )
 )
 
@@ -31,7 +29,6 @@ staged_customer_data = Asset(
         description="Cleaned and standardized customer data ready for transformation",
         owners=["adamprefectio", "jakeprefectio5"],
         url="https://prefect.io",
-        by="dbt"
     )
 )
 
@@ -42,7 +39,6 @@ staged_product_data = Asset(
         description="Normalized product data with consistent formatting",
         owners=["adamprefectio", "jakeprefectio5"],
         url="https://prefect.io",
-        by="dbt"
     )
 )
 
@@ -64,7 +60,6 @@ product_recommendations = Asset(
         description="Real-time product recommendation model outputs",
         owners=["Data science", "chris"],
         url="https://prefect.io",
-        by="vertex_ai"
     )
 )
 
@@ -76,7 +71,6 @@ customer_analytics = Asset(
         description="Aggregated customer behavior and engagement metrics",
         owners=["nicholas", "kevin-g"],
         url="https://prefect.io",
-        by="dbt"
     )
 )
 
@@ -98,7 +92,6 @@ data_quality_metrics = Asset(
         description="Comprehensive data quality checks and validation results",
         owners=["adamprefectio", "jakeprefectio5"],
         url="https://prefect.io",
-        by="great_expectations"
     )
 )
 
