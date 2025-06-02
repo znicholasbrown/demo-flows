@@ -7,7 +7,8 @@ from assets import (
     staged_product_data,
     customer_segments,
     customer_analytics,
-    data_quality_metrics
+    data_quality_metrics,
+    data_catalog
 )
 
 @materialize(staged_customer_data, 
@@ -59,8 +60,8 @@ def train_models(fail=False):
     customer_analytics,
     customer_segments
 ])
-def generate_analytics_report(fail=False):
-    """Generate analytics report using both analytics and ML outputs"""
+def get_analytics(fail=False):
+    """Get analytics report using both analytics and ML outputs"""
     if fail:
         raise Exception("Failed to generate analytics report")
     return "Report generated"
@@ -69,33 +70,40 @@ def generate_analytics_report(fail=False):
             asset_deps=[
                 staged_customer_data,
                 staged_product_data,
-                customer_segments
             ])
-def run_quality_checks(fail=False):
+def run_quality_checks(analytics, fail=False):
     """Run quality checks on all key data assets"""
     if fail:
         raise Exception("Failed to run quality checks")
     return "Quality checks completed"
 
+@materialize(data_catalog)
+def generate_catalog(analytics, quality):
+    """Generate catalog of all data assets"""
+    return "Catalog generated successfully"
+
 @flow(name="Analytics and Quality Checks")
-def run_analytics_and_quality(fail_report=False, fail_quality=False):
+def run_analytics_and_quality(fail_analytics=False, fail_quality=False):
     """Flow to run analytics and quality checks"""
-    report = generate_analytics_report(fail_report)
-    quality = run_quality_checks(fail_quality)
+    analytics = get_analytics(fail_analytics)
+    quality = run_quality_checks(analytics, fail_quality)
+    catalog = generate_catalog(analytics, quality)
+    
     return {
-        "analytics": report,
-        "quality": quality
+        "analytics": analytics,
+        "quality": quality,
+        "catalog": catalog
     }
 
 @flow(name="Main Pipeline")
 def run_pipeline(fail_ml=False, fail_analytics=False, fail_quality=False):
     """Main pipeline flow that orchestrates all sub-flows"""
-    # staging_results = ingest_and_stage_data()
+    staging_results = ingest_and_stage_data()
     ml_results = train_models(fail_ml)
     analytics_results = run_analytics_and_quality(fail_analytics, fail_quality)
     
     return {
-        # "staging": staging_results,
+        "staging": staging_results,
         "ml": ml_results,
         "analytics": analytics_results
     }
