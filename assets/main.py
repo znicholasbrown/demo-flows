@@ -35,7 +35,7 @@ def ingest_and_stage_data():
         "product_staging": product_result
     }
 
-@task(asset_deps=[staged_customer_data], by="dbt")
+@task(asset_deps=[staged_customer_data])
 def prepare_customer_features(fail=False):
     """Prepare features for customer segmentation"""
     if fail:
