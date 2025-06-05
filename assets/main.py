@@ -109,4 +109,4 @@ def run_pipeline(fail_ml=False, fail_analytics=False, fail_quality=False):
 
 
 if __name__ == "__main__":
-    run_pipeline()
+    run_pipeline(fail_quality=True)

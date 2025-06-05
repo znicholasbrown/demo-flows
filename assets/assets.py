@@ -104,6 +104,16 @@ data_catalog = Asset(
     url="https://prefect.io",
 )
 
+
+elastic_search_db = Asset(
+    key="elasticsearch://search-team/documents",
+    name="Elasticsearch Document DB",
+    description="Elasticsearch database for storing and searching documents",
+    owners=["Search & Rescue"],
+    url="https://prefect.io",
+)
+
+
 # List of all assets for easy reference
 all_assets = [
     raw_customer_data,
@@ -115,5 +125,6 @@ all_assets = [
     customer_analytics,
     sales_forecasting,
     data_quality_metrics,
-    data_catalog
+    data_catalog,
+    elastic_search_db
 ]
