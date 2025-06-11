@@ -20,9 +20,15 @@ def create_assets(dependency_pattern: Literal["fan_in", "fan_out"]) -> list[Asse
         prefix_assets.append(new_asset)
         
         if dependency_pattern == "fan_in":
-            deps = [prefix_assets[i-1]] if i > 0 else []
+            deps = prefix_assets[:-1] if i > 0 else []
         else:
-            deps = [prefix_assets[0]] if i > 0 else []
+            level = i.bit_length() - 1
+            if level > 0:
+                prev_level_start = 2 ** (level - 1) - 1
+                prev_level_end = 2 ** level - 1
+                deps = prefix_assets[prev_level_start:prev_level_end]
+            else:
+                deps = []
         
         @materialize(new_asset, asset_deps=deps, by="python")
         def materialize_prefix_asset(prefix_name: str, deps: list[Asset] = None):
