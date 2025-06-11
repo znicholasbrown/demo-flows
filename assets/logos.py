@@ -38,7 +38,7 @@ def create_assets(dependency_pattern: Literal["fan_in", "fan_out"]) -> list[Asse
                 }
             }
         
-        materialize_prefix_asset.submit(prefix, deps).wait()
+        materialize_prefix_asset.submit(prefix, deps)
     
     return prefix_assets
 
