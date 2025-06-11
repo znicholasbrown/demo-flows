@@ -163,7 +163,6 @@ prefixes = [
   'sagemaker',
   'salesforce',
   'scala',
-  'scikit-learn',
   'scikit',
   'scikitlearn',
   'scipy',
