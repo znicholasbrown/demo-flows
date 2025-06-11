@@ -26,7 +26,7 @@ def process_and_create_assets(number: int) -> list[Asset]:
         )
         dynamic_assets.append(new_asset)
         
-        @materialize(new_asset, asset_deps=[elastic_search_db])
+        @materialize(new_asset, asset_deps=[elastic_search_db], by="python")
         def materialize_dynamic_asset(asset_num: int):
             return {"asset_number": asset_num}
         
