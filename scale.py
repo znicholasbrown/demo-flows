@@ -19,8 +19,12 @@ base_asset = Asset(
 )
 
 @materialize(base_asset)
-def materialize_base_asset():
+def materialize_base_asset(metadata: dict | None = None):
     """Materialize the base asset"""
+
+    if metadata:
+        base_asset.add_metadata(metadata)
+
     return {"status": "materialized", "timestamp": time.time()}
 
 @task
@@ -197,13 +201,12 @@ def scale_flow(n: int = 5, batch_size: int = 100):
     # Aggregate and summarize results
     final_results = aggregate_results(processed_results)
     
-    # Add metadata to base asset
-    base_asset.add_metadata({
+    materialize_base_asset({
         "tasks_executed": n,
         "total_records_processed": final_results["total_records_processed"],
         "execution_timestamp": time.time()
     })
-    
+
     return {
         "task_assets": task_assets,
         "results": processed_results,
