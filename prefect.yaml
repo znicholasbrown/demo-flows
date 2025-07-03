@@ -97,3 +97,16 @@ deployments:
       work_queue_name: default
       job_variables: {}
     schedules: []
+
+  - name: managed
+    version: null
+    tags: ['scaling']
+    concurrency_limit: null
+    description: Scaling test
+    entrypoint: scale.py:scale_flow
+    parameters: {}
+    work_pool:
+      name: nicholas-managed-staging
+      work_queue_name: default
+      job_variables: {}
+    schedules: []
