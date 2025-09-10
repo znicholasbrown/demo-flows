@@ -1,4 +1,5 @@
 from prefect import flow, get_run_logger, task
+import time
 
 def rainbow_wave(text):
     colors = [31, 33, 32, 36, 34, 35, 35]  # ANSI color codes for ROYGBIV
@@ -124,8 +125,9 @@ def logs():
     logger.debug(rainbow_wave(lorem_ipsum))
 
 # 4600
-    for i in range(100):
+    for i in range(200):
         logger.info(f"Message {i}")
+        time.sleep(1)
         palette_test_cases()
 
 if __name__ == "__main__":
