@@ -614,4 +614,4 @@ def model_usage(duration_minutes: int = 1):
 
 
 if __name__ == "__main__":
-    model_usage()
+    model_usage(10)
