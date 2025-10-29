@@ -811,8 +811,8 @@ def financial_data_pipeline_flow(
 if __name__ == "__main__":
     # Execute the financial data pipeline
     result = financial_data_pipeline_flow(
-        exchanges=["NYSE", "NASDAQ"],
-        symbols_per_exchange=15
+        exchanges=["NYSE"],
+        symbols_per_exchange=1
     )
     print("\n✅ Financial Data Pipeline execution completed successfully!")
     print(f"📊 Final Results: {result}")
