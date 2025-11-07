@@ -18,6 +18,7 @@ from prefect.assets import Asset, AssetProperties, materialize
 from prefect.states import Cancelled, Completed, State
 from prefect._experimental.artifacts.composable import Artifact
 from prefect._experimental.artifacts.components import Markdown, Table
+from prefect_dask import DaskTaskRunner
 import marvin
 from pydantic_ai.models.anthropic import AnthropicModel
 
@@ -387,7 +388,7 @@ def create_party_quest_summary(quest_result: dict) -> dict:
     return quest_result
 
 
-@flow(name="Party Quest", log_prints=True)
+@flow(name="Party Quest", log_prints=True, task_runner=DaskTaskRunner())
 def party_quest_subflow(party_name: str, room_name: str) -> dict:
     """Subflow representing a single party's quest through one room."""
     print(f"\n⚔️  {party_name} begins quest in {room_name}...")
@@ -466,7 +467,7 @@ def create_expedition_summary(party_name: str, expedition_results: list[dict]) -
     return expedition_results
 
 
-@flow(name="Dungeon Level Expedition", log_prints=True)
+@flow(name="Dungeon Level Expedition", log_prints=True, task_runner=DaskTaskRunner())
 def dungeon_level_expedition(party_name: str, rooms: list[str]) -> list[dict]:
     """Nested subflow coordinating a party's expedition through multiple rooms."""
     print(f"\n🗡️  {party_name} embarking on expedition through {len(rooms)} rooms...")
@@ -549,7 +550,7 @@ def award_experience_points(all_results: list[dict]) -> dict:
     return xp_stats
 
 
-@flow(name="Grand Campaign", log_prints=True)
+@flow(name="Grand Campaign", log_prints=True, task_runner=DaskTaskRunner())
 def dungeon_campaign_flow(
     num_parties: int = 3,
     rooms_per_party: int = 4
@@ -605,8 +606,10 @@ def dungeon_campaign_flow(
         print(f"   ⚔️  {party}")
     print()
 
-    # Each party explores their own set of rooms
+    # Each party explores their own set of rooms - submit all expeditions to Dask in parallel
     all_results = []
+    expedition_futures = []
+
     for i, party_name in enumerate(party_names):
         rooms = random.sample(room_templates, rooms_per_party)
         print(f"🗡️  {party_name} will explore:")
@@ -614,9 +617,15 @@ def dungeon_campaign_flow(
             print(f"      📍 {room}")
         print()
 
-        party_results = dungeon_level_expedition(party_name, rooms)
+        # Submit expedition to Dask for parallel execution
+        future = dungeon_level_expedition.submit(party_name, rooms)
+        expedition_futures.append(future)
+
+    # Wait for all expeditions to complete and collect results
+    print(f"\n⚔️  All {num_parties} parties embarking on expeditions in parallel...")
+    for future in expedition_futures:
+        party_results = future.result()
         all_results.extend(party_results)
-        time.sleep(0.5)
 
     print("\n" + "=" * 80)
     print("📖 CHRONICLING THE CAMPAIGN")
@@ -680,6 +689,7 @@ def dungeon_campaign_flow(
 
 if __name__ == "__main__":
     # Begin the grand campaign!
-    result = dungeon_campaign_flow(num_parties=3, rooms_per_party=4)
-    print("\n🎉 The campaign has concluded!")
-    print(f"📊 Final results: {result}")
+    while True:
+        result = dungeon_campaign_flow(num_parties=1, rooms_per_party=1)
+        print(f"📊 Final results: {result}")
+        time.sleep(1)

@@ -29,6 +29,34 @@ deployments:
       work_queue_name: secondary
       job_variables: {}
 
+  - name: process-node-map
+    tags: ['process', 'node', 'map']
+    description: Process a node map
+    schedules: []
+    entrypoint: process_node_map.py:process_node_map
+    parameters: {
+      "sleep_seconds_range_per_node": [5.0, 15.0],
+      "number_nodes": 20
+    }
+    work_pool:
+      name: nicholas
+      work_queue_name: default
+      job_variables: {}
+
+  - name: dungeon-campaign
+    tags: ['dungeon', 'campaign']
+    description: Run a dungeon campaign
+    schedules: []
+    entrypoint: dungeon_campaign_flow.py:dungeon_campaign_flow
+    parameters: {
+      "num_parties": 3,
+      "rooms_per_party": 4
+    }
+    work_pool:
+      name: nicholas
+      work_queue_name: default
+      job_variables: {}
+
   - name: default
     tags: ['scraper', 'beautifulsoup']
     description: Scrape a webpage and size-rank the elements

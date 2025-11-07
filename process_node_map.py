@@ -17,4 +17,11 @@ def process_node_map(sleep_seconds_range_per_node: tuple[float, float] = (1.0, 5
 
 
 if __name__ == '__main__':
-    process_node_map(sleep_seconds_range_per_node=(5.0, 15.0), number_nodes=20)
+    # process_node_map(sleep_seconds_range_per_node=(5.0, 15.0), number_nodes=20)
+    process_node_map.serve(
+        name="process-node-map",
+        parameters={
+            "sleep_seconds_range_per_node": (5.0, 15.0),
+            "number_nodes": 20
+        }
+    )
