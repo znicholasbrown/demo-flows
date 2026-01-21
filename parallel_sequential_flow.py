@@ -27,7 +27,7 @@ def long_running_task(branch_id: int, task_id: int, duration_seconds: int = 1):
     return f"Branch {branch_id}, Task {task_id} finished"
 
 @flow(task_runner=DaskTaskRunner())
-def parallel_sequential(num_parallel: int = 30, num_sequential: int = 10, duration_seconds: int = 20):
+def parallel_sequential(num_parallel: int = 30, num_sequential: int = 20, duration_seconds: int = 10):
     """
     Runs multiple parallel branches, each containing sequential tasks.
 

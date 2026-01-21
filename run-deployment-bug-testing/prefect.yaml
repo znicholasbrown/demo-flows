@@ -1,0 +1,39 @@
+# Prefect deployment configuration
+name: run-deployment-bug-testing
+
+# Pull step - defines how to retrieve the flow code
+pull:
+  - prefect.deployments.steps.set_working_directory:
+      directory: /Users/nicholas/projects/flows/demo-flows/run-deployment-bug-testing
+
+# Deployments configuration
+deployments:
+  # First flow deployment
+  - name: default
+    entrypoint: callee.py:first_flow
+    work_pool:
+      name: nicholas
+    schedule: null
+    tags:
+      - bug
+    description: I get called by the run-deployment-testing-caller
+
+  # Second flow deployment
+  - name: default
+    entrypoint: caller.py:second_flow
+    work_pool:
+      name: nicholas
+    schedule: null
+    tags:
+      - bug
+    description: I call the run-deployment-testing-callee
+
+  # Third flow deployment
+  - name: default
+    entrypoint: third_flow.py:third_flow
+    work_pool:
+      name: nicholas
+    schedule: null
+    tags:
+      - bug
+    description: I get called by the caller task

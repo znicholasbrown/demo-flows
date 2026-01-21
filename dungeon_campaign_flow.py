@@ -618,14 +618,13 @@ def dungeon_campaign_flow(
         print()
 
         # Submit expedition to Dask for parallel execution
-        future = dungeon_level_expedition.submit(party_name, rooms)
+        future = dungeon_level_expedition(party_name, rooms)
         expedition_futures.append(future)
 
     # Wait for all expeditions to complete and collect results
     print(f"\n⚔️  All {num_parties} parties embarking on expeditions in parallel...")
     for future in expedition_futures:
-        party_results = future.result()
-        all_results.extend(party_results)
+        all_results.extend(future)
 
     print("\n" + "=" * 80)
     print("📖 CHRONICLING THE CAMPAIGN")
@@ -686,10 +685,16 @@ def dungeon_campaign_flow(
         "chronicle": chronicle_key
     }
 
+loop = False
+num_parties = 1
+rooms_per_party = 1
 
 if __name__ == "__main__":
     # Begin the grand campaign!
-    while True:
-        result = dungeon_campaign_flow(num_parties=1, rooms_per_party=1)
-        print(f"📊 Final results: {result}")
-        time.sleep(1)
+    if loop:
+        while True:
+            result = dungeon_campaign_flow(num_parties=num_parties, rooms_per_party=rooms_per_party)
+            print(f"📊 Final results: {result}")
+            time.sleep(1)
+    else:
+        result = dungeon_campaign_flow(num_parties=num_parties, rooms_per_party=rooms_per_party)
