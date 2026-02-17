@@ -78,7 +78,7 @@ deployments:
 
   - name: default
     tags: ['museum', 'operations', 'analytics']
-    description: Master orchestration flow for museum operations analytics
+    description: Primary orchestration flow for museum operations analytics
     schedules:
       - cron: "0 * * * *"
         timezone: UTC

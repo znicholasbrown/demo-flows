@@ -2041,7 +2041,7 @@ def reporting_flow(warehouse_data: Dict, operations_data: Dict):
     }
 
 
-@flow(name="Museum Operations - Master Flow", log_prints=True, task_runner=DaskTaskRunner())
+@flow(name="Museum Operations - Primary Flow", log_prints=True, task_runner=DaskTaskRunner())
 def museum_operations_flow():
     """
     Master orchestration flow for museum operations analytics.
