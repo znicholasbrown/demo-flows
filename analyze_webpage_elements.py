@@ -87,10 +87,12 @@ async def analyze_webpage(url: AnyHttpUrl = AnyHttpUrl("https://prefect.io")) ->
     return elements
 
 if __name__ == "__main__":
-    import asyncio
+    #import asyncio
     
-    async def main():
-        url = AnyHttpUrl("https://prefect.io")
-        await analyze_webpage(url)
+   # async def main():
+       # url = AnyHttpUrl("https://prefect.io")
+      #  await analyze_webpage(url)
     
-    asyncio.run(main())
+    # asyncio.run(main())
+
+    analyze_webpage.serve(name="local")
