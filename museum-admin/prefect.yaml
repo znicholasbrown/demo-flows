@@ -19,7 +19,7 @@ deployments:
     schedules:
       - cron: "0 * * * *"
         timezone: UTC
-    entrypoint: museum-admin/museum_operations_flow.py:museum_operations_flow
+    entrypoint: museum_operations_flow.py:museum_operations_flow
     parameters: {}
     work_pool:
       name: managed
@@ -30,7 +30,7 @@ deployments:
     tags: ['museum', 'operations', 'assets']
     description: Isolated assets flow for standalone reference data (budget, weather)
     schedules: []
-    entrypoint: museum-admin/museum_operations_flow.py:isolated_assets_flow
+    entrypoint: museum_operations_flow.py:isolated_assets_flow
     parameters: {}
     work_pool:
       name: managed
@@ -41,7 +41,7 @@ deployments:
     tags: ['museum', 'operations', 'ingestion']
     description: Raw data ingestion flow for all root node data sources
     schedules: []
-    entrypoint: museum-admin/museum_operations_flow.py:data_ingestion_flow
+    entrypoint: museum_operations_flow.py:data_ingestion_flow
     parameters: {}
     work_pool:
       name: managed
@@ -52,7 +52,7 @@ deployments:
     tags: ['museum', 'operations', 'analytics', 'visitors']
     description: Visitor analytics flow for transforming and profiling visitor data
     schedules: []
-    entrypoint: museum-admin/museum_operations_flow.py:visitor_analytics_flow
+    entrypoint: museum_operations_flow.py:visitor_analytics_flow
     parameters: {}
     work_pool:
       name: managed
@@ -63,7 +63,7 @@ deployments:
     tags: ['museum', 'operations', 'analytics', 'financial']
     description: Financial analytics flow for revenue breakdowns and forecasting
     schedules: []
-    entrypoint: museum-admin/museum_operations_flow.py:financial_analytics_flow
+    entrypoint: museum_operations_flow.py:financial_analytics_flow
     parameters: {}
     work_pool:
       name: managed
@@ -74,7 +74,7 @@ deployments:
     tags: ['museum', 'operations', 'facilities', 'conservation']
     description: Operations management flow for facilities and conservation workflows
     schedules: []
-    entrypoint: museum-admin/museum_operations_flow.py:operations_management_flow
+    entrypoint: museum_operations_flow.py:operations_management_flow
     parameters: {}
     work_pool:
       name: managed
@@ -85,7 +85,7 @@ deployments:
     tags: ['museum', 'operations', 'warehouse']
     description: Data warehouse flow for building visitor, financial, and operations marts
     schedules: []
-    entrypoint: museum-admin/museum_operations_flow.py:data_warehouse_flow
+    entrypoint: museum_operations_flow.py:data_warehouse_flow
     parameters: {}
     work_pool:
       name: managed
@@ -96,7 +96,7 @@ deployments:
     tags: ['museum', 'operations', 'reporting']
     description: Reporting flow for generating terminal dashboards and reports
     schedules: []
-    entrypoint: museum-admin/museum_operations_flow.py:reporting_flow
+    entrypoint: museum_operations_flow.py:reporting_flow
     parameters: {}
     work_pool:
       name: managed
