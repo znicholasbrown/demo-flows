@@ -76,23 +76,6 @@ deployments:
       job_variables:
         pip_packages: ["beautifulsoup4"]
 
-  - name: default
-    tags: ['museum', 'operations', 'analytics']
-    description: Primary orchestration flow for museum operations analytics
-    schedules:
-      - cron: "0 * * * *"
-        timezone: UTC
-
-    # flow-specific fields
-    entrypoint: museum_operations_flow.py:museum_operations_flow
-    parameters: {}
-
-    # infra-specific fields
-    work_pool:
-      name: managed
-      work_queue_name: default
-      job_variables: {}
-
   # assets
   - name: default
     version: null
