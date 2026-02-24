@@ -1697,16 +1697,17 @@ def validate_dashboard_health() -> Dict:
             # Filter by name to only get runs of this specific task
             task_runs = await client.read_task_runs(
                 task_run_filter=TaskRunFilter(
-                    name=TaskRunFilterName(any_=["validate_dashboard_health"])
+                    name=TaskRunFilterName(like_="validate_dashboard_health%")
                 ),
                 sort=TaskRunSort.END_TIME_DESC,
                 limit=10  # Get last 10 runs to find the previous one
             )
 
-            # We already filtered by name, so all task_runs are for this task
-            if len(task_runs) > 1:
-                # We found a previous run (index 0 is current, index 1 is previous)
-                last_run = task_runs[1]
+            # END_TIME_DESC with NULLS LAST: completed runs come first, current
+            # running task (null end_time) sorts to the end of the list.
+            # So index 0 is the most recently completed previous run.
+            if len(task_runs) >= 1:
+                last_run = task_runs[0]
                 last_state = last_run.state
 
                 print(f"  📊 Found previous task run: {last_run.id}")
