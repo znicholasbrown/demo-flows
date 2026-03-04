@@ -39,33 +39,9 @@ from prefect.client.schemas.sorting import TaskRunSort
 # Declared here as upstream deps only - same asset keys as in museum_acquisitions_flow.py
 # ============================================================================
 
-newly_catalogued_artworks = Asset(
-    key="pg://museum-db/newly-catalogued-artworks",
-    properties=AssetProperties(
-        name="Newly Catalogued Artworks",
-        description="""Cross-workspace upstream asset materialized by museum_acquisitions_flow.
+newly_catalogued_artworks = Asset(key="pg://museum-db/newly-catalogued-artworks")
 
-When newly acquired works are formally catalogued, operations must schedule initial
-condition assessments, assign climate monitoring zones, establish conservation priority
-baselines, and register works in the insurance tracking system. This asset is the
-handoff point from the acquisitions pipeline into the operations pipeline.""",
-        owners=["crickpettish", "nicholas"],
-    )
-)
-
-acquisition_provenance_database = Asset(
-    key="snowflake://acquisitions/provenance-database",
-    properties=AssetProperties(
-        name="Acquisition Provenance Database",
-        description="""Cross-workspace upstream asset materialized by museum_acquisitions_flow.
-
-Insurance valuations for acquired works require complete provenance chains to establish
-legal ownership (insurable interest), historical transaction values (market comparables
-for insurance benchmarking), and export license compliance. The artwork_insurance_valuations
-asset cannot properly price newly acquired works without confirmed provenance records.""",
-        owners=["crickpettish"],
-    )
-)
+acquisition_provenance_database = Asset(key="snowflake://acquisitions/provenance-database")
 
 # ============================================================================
 # ISOLATED ASSETS (No upstream, no downstream dependencies)

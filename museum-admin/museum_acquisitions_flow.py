@@ -31,33 +31,9 @@ from prefect_dask import DaskTaskRunner
 # Same asset keys as defined in museum_operations_flow.py
 # ============================================================================
 
-artwork_condition_reports = Asset(
-    key="pg://museum-db/artwork-condition-reports",
-    properties=AssetProperties(
-        name="Artwork Condition Assessment Reports",
-        description="""Cross-workspace upstream asset materialized by museum_operations_flow.
+artwork_condition_reports = Asset(key="pg://museum-db/artwork-condition-reports")
 
-The acquisitions team references conservation condition reports to assess feasibility
-before committing to acquire artworks that may require significant restoration. Current
-lab backlog and conservator specializations directly constrain which acquisitions are
-operationally viable in a given period.""",
-        owners=["crickpettish"],
-    )
-)
-
-financial_health_score = Asset(
-    key="snowflake://analytics/financial-health-score",
-    properties=AssetProperties(
-        name="Museum Financial Health Score",
-        description="""Cross-workspace upstream asset materialized by museum_operations_flow.
-
-The acquisitions committee uses institutional financial health score to calibrate
-acquisition budget capacity. Board policy requires health score >70 for major
-acquisitions (>$500k); health score <60 triggers an automatic acquisition freeze
-to protect operating reserves and endowment targets.""",
-        owners=["nicholas", "crickpettish"],
-    )
-)
+financial_health_score = Asset(key="snowflake://analytics/financial-health-score")
 
 # ============================================================================
 # CROSS-WORKSPACE SHARED ASSETS
@@ -1289,7 +1265,7 @@ def acquisitions_reporting_flow(committee_data: Dict, collection_data: Dict):
     report = create_collection_development_report(
         collection_data["approved"],
         committee_data["candidates"],
-        committee_data["dossiers"]  # reuse dossiers dict - has avg_market_value
+        committee_data["candidates"]
     )
 
     print(f"✅ Reporting: dashboard updated, collection development report generated")
