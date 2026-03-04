@@ -19,7 +19,7 @@ deployments:
     schedules:
       - cron: "0 6 * * 1"
         timezone: UTC
-    entrypoint: museum-admin/national-museum-acquisitions/museum_acquisitions_flow.py:museum_acquisitions_flow
+    entrypoint: museum_acquisitions_flow.py:museum_acquisitions_flow
     parameters: {}
     work_pool:
       name: managed
@@ -30,7 +30,7 @@ deployments:
     tags: ['museum', 'acquisitions', 'ingestion']
     description: Raw data ingestion for auction results, dealer submissions, gifts, and provenance research
     schedules: []
-    entrypoint: museum-admin/national-museum-acquisitions/museum_acquisitions_flow.py:acquisitions_data_ingestion_flow
+    entrypoint: museum_acquisitions_flow.py:acquisitions_data_ingestion_flow
     parameters: {}
     work_pool:
       name: managed
@@ -41,7 +41,7 @@ deployments:
     tags: ['museum', 'acquisitions', 'market-data']
     description: Art market analysis flow for auction price cleaning and comparable valuation
     schedules: []
-    entrypoint: museum-admin/national-museum-acquisitions/museum_acquisitions_flow.py:art_market_analysis_flow
+    entrypoint: museum_acquisitions_flow.py:art_market_analysis_flow
     parameters: {}
     work_pool:
       name: managed
@@ -52,7 +52,7 @@ deployments:
     tags: ['museum', 'acquisitions', 'compliance']
     description: Due diligence flow for provenance research, ethics review, and gift vetting
     schedules: []
-    entrypoint: museum-admin/national-museum-acquisitions/museum_acquisitions_flow.py:due_diligence_flow
+    entrypoint: museum_acquisitions_flow.py:due_diligence_flow
     parameters: {}
     work_pool:
       name: managed
@@ -63,7 +63,7 @@ deployments:
     tags: ['museum', 'acquisitions', 'committee', 'cross-workspace']
     description: Committee preparation flow - reads artwork_condition_reports and financial_health_score from national-museum-admin workspace
     schedules: []
-    entrypoint: museum-admin/national-museum-acquisitions/museum_acquisitions_flow.py:acquisitions_committee_flow
+    entrypoint: museum_acquisitions_flow.py:acquisitions_committee_flow
     parameters: {}
     work_pool:
       name: managed
@@ -74,7 +74,7 @@ deployments:
     tags: ['museum', 'acquisitions', 'collection', 'cross-workspace']
     description: Collection integration flow - materializes newly_catalogued_artworks and acquisition_provenance_database for national-museum-admin workspace
     schedules: []
-    entrypoint: museum-admin/national-museum-acquisitions/museum_acquisitions_flow.py:collection_integration_flow
+    entrypoint: museum_acquisitions_flow.py:collection_integration_flow
     parameters: {}
     work_pool:
       name: managed
@@ -85,7 +85,7 @@ deployments:
     tags: ['museum', 'acquisitions', 'reporting']
     description: Acquisitions reporting flow for pipeline dashboard and collection development report
     schedules: []
-    entrypoint: museum-admin/national-museum-acquisitions/museum_acquisitions_flow.py:acquisitions_reporting_flow
+    entrypoint: museum_acquisitions_flow.py:acquisitions_reporting_flow
     parameters: {}
     work_pool:
       name: managed
