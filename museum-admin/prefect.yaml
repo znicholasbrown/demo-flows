@@ -102,3 +102,87 @@ deployments:
       name: managed
       work_queue_name: default
       job_variables: {}
+
+  # ============================================================================
+  # NATIONAL MUSEUM ACQUISITIONS (national-museum-acquisitions workspace)
+  # Cross-workspace asset deps with museum_operations_flow above
+  # ============================================================================
+
+  - name: default
+    tags: ['museum', 'acquisitions']
+    description: Primary orchestration flow for national museum art acquisitions
+    schedules:
+      - cron: "0 6 * * 1"
+        timezone: UTC
+    entrypoint: museum_acquisitions_flow.py:museum_acquisitions_flow
+    parameters: {}
+    work_pool:
+      name: managed
+      work_queue_name: default
+      job_variables: {}
+
+  - name: default
+    tags: ['museum', 'acquisitions', 'ingestion']
+    description: Raw data ingestion for auction results, dealer submissions, gifts, and provenance research
+    schedules: []
+    entrypoint: museum_acquisitions_flow.py:acquisitions_data_ingestion_flow
+    parameters: {}
+    work_pool:
+      name: managed
+      work_queue_name: default
+      job_variables: {}
+
+  - name: default
+    tags: ['museum', 'acquisitions', 'market-data']
+    description: Art market analysis flow for auction price cleaning and comparable valuation
+    schedules: []
+    entrypoint: museum_acquisitions_flow.py:art_market_analysis_flow
+    parameters: {}
+    work_pool:
+      name: managed
+      work_queue_name: default
+      job_variables: {}
+
+  - name: default
+    tags: ['museum', 'acquisitions', 'compliance']
+    description: Due diligence flow for provenance research, ethics review, and gift vetting
+    schedules: []
+    entrypoint: museum_acquisitions_flow.py:due_diligence_flow
+    parameters: {}
+    work_pool:
+      name: managed
+      work_queue_name: default
+      job_variables: {}
+
+  - name: default
+    tags: ['museum', 'acquisitions', 'committee', 'cross-workspace']
+    description: Committee preparation flow - reads artwork_condition_reports and financial_health_score from museum-admin workspace
+    schedules: []
+    entrypoint: museum_acquisitions_flow.py:acquisitions_committee_flow
+    parameters: {}
+    work_pool:
+      name: managed
+      work_queue_name: default
+      job_variables: {}
+
+  - name: default
+    tags: ['museum', 'acquisitions', 'collection', 'cross-workspace']
+    description: Collection integration flow - materializes newly_catalogued_artworks and acquisition_provenance_database for museum-admin workspace
+    schedules: []
+    entrypoint: museum_acquisitions_flow.py:collection_integration_flow
+    parameters: {}
+    work_pool:
+      name: managed
+      work_queue_name: default
+      job_variables: {}
+
+  - name: default
+    tags: ['museum', 'acquisitions', 'reporting']
+    description: Acquisitions reporting flow for pipeline dashboard and collection development report
+    schedules: []
+    entrypoint: museum_acquisitions_flow.py:acquisitions_reporting_flow
+    parameters: {}
+    work_pool:
+      name: managed
+      work_queue_name: default
+      job_variables: {}

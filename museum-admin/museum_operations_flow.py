@@ -12,6 +12,14 @@ This flow demonstrates various asset dependency patterns:
 
 Theme: Running an art museum - business and administrative operations
 Architecture: Flow of flows pattern with data ingestion, analytics, and reporting layers
+
+Cross-workspace asset dependencies with museum_acquisitions_flow:
+  Assets materialized HERE, read by museum_acquisitions_flow (national-museum-acquisitions):
+    - artwork_condition_reports  → acquisitions conservation_feasibility_assessment
+    - financial_health_score     → acquisitions acquisition_budget_capacity
+  Assets materialized by museum_acquisitions_flow, read HERE as upstream deps:
+    - newly_catalogued_artworks       → conservation_schedule (new works need initial assessment)
+    - acquisition_provenance_database → artwork_insurance_valuations (provenance = insurable interest)
 """
 import time
 import random
@@ -24,6 +32,40 @@ from prefect_dask import DaskTaskRunner
 from prefect.states import Completed
 from prefect.client.schemas.filters import TaskRunFilter, TaskRunFilterName
 from prefect.client.schemas.sorting import TaskRunSort
+
+# ============================================================================
+# CROSS-WORKSPACE REFERENCE ASSETS
+# Materialized by museum_acquisitions_flow (national-museum-acquisitions workspace)
+# Declared here as upstream deps only - same asset keys as in museum_acquisitions_flow.py
+# ============================================================================
+
+newly_catalogued_artworks = Asset(
+    key="pg://museum-db/newly-catalogued-artworks",
+    properties=AssetProperties(
+        name="Newly Catalogued Artworks",
+        description="""Cross-workspace upstream asset materialized by museum_acquisitions_flow.
+
+When newly acquired works are formally catalogued, operations must schedule initial
+condition assessments, assign climate monitoring zones, establish conservation priority
+baselines, and register works in the insurance tracking system. This asset is the
+handoff point from the acquisitions pipeline into the operations pipeline.""",
+        owners=["crickpettish", "nicholas"],
+    )
+)
+
+acquisition_provenance_database = Asset(
+    key="snowflake://acquisitions/provenance-database",
+    properties=AssetProperties(
+        name="Acquisition Provenance Database",
+        description="""Cross-workspace upstream asset materialized by museum_acquisitions_flow.
+
+Insurance valuations for acquired works require complete provenance chains to establish
+legal ownership (insurable interest), historical transaction values (market comparables
+for insurance benchmarking), and export license compliance. The artwork_insurance_valuations
+asset cannot properly price newly acquired works without confirmed provenance records.""",
+        owners=["crickpettish"],
+    )
+)
 
 # ============================================================================
 # ISOLATED ASSETS (No upstream, no downstream dependencies)
@@ -1475,10 +1517,19 @@ def analyze_visitor_demographics(tickets: Dict, memberships: Dict) -> Dict:
         "age_distribution": {"18-34": 0.30, "35-54": 0.45, "55+": 0.25}
     }
 
-@materialize(conservation_schedule, tags=["operations", "conservation"], asset_deps=[raw_conservation_work_orders, climate_control_logs])
+@materialize(conservation_schedule, tags=["operations", "conservation"],
+             asset_deps=[raw_conservation_work_orders, climate_control_logs,
+                         newly_catalogued_artworks])
 def create_conservation_schedule(work_orders: Dict, climate: Dict) -> Dict:
-    """Multi-upstream (2) - prioritizes conservation work."""
+    """
+    Multi-upstream (3) - prioritizes conservation work.
+
+    Cross-workspace dep: newly_catalogued_artworks from museum_acquisitions_flow.
+    Newly acquired works require initial condition assessments and climate zone
+    assignments before they can be managed in the conservation schedule.
+    """
     print("📋 Creating conservation schedule...")
+    print("  [Cross-workspace] Incorporating newly_catalogued_artworks from museum_acquisitions_flow")
     time.sleep(0.5)
     return {
         "scheduled_work_orders": work_orders["work_orders"],
@@ -1554,10 +1605,19 @@ def analyze_education_attendance(programs: Dict, tickets: Dict) -> Dict:
         "revenue_per_program": random.randint(500, 2000)
     }
 
-@materialize(artwork_insurance_valuations, tags=["operations", "collection"], asset_deps=[raw_artwork_loans, raw_conservation_work_orders])
+@materialize(artwork_insurance_valuations, tags=["operations", "collection"],
+             asset_deps=[raw_artwork_loans, raw_conservation_work_orders,
+                         acquisition_provenance_database])
 def calculate_insurance_valuations(loans: Dict, conservation: Dict) -> Dict:
-    """Multi-upstream (2) - updates insurance values."""
+    """
+    Multi-upstream (3) - updates insurance values.
+
+    Cross-workspace dep: acquisition_provenance_database from museum_acquisitions_flow.
+    Complete provenance records establish insurable interest and provide historical
+    transaction values used as insurance benchmarks for newly acquired works.
+    """
     print("💎 Calculating artwork insurance valuations...")
+    print("  [Cross-workspace] Reading acquisition_provenance_database from museum_acquisitions_flow")
     time.sleep(0.5)
     return {
         "artworks_valued": loans["active_loans"] + conservation["work_orders"],
