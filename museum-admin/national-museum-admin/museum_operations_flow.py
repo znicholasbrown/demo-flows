@@ -2145,11 +2145,14 @@ def museum_operations_flow():
     print("🎯 MUSEUM OPERATIONS SUMMARY")
     print("=" * 80)
     print(f"⏱️  Pipeline Duration: {duration:.1f} seconds")
-    print(f"🏛️  Visitor Analytics: {visitor_data['visitor_profile']['total_visitors']} visitors profiled")
-    print(f"💰 Financial Health: {financial_data['financial_health']['rating'].upper()} (score: {financial_data['financial_health']['health_score']})")
-    print(f"🎨 Conservation: {operations_data['conservation_schedule']['scheduled_work_orders']} work orders scheduled")
-    print(f"📊 Data Quality: {warehouse_data['visitor_mart']['data_quality']:.0%} average across marts")
-    print(f"📈 Dashboards Created: {len(reports)} terminal reporting assets")
+    try:
+        print(f"🏛️  Visitor Analytics: {visitor_data['visitor_profile']['total_visitors']} visitors profiled")
+        print(f"💰 Financial Health: {financial_data['financial_health']['rating'].upper()} (score: {financial_data['financial_health']['health_score']})")
+        print(f"🎨 Conservation: {operations_data['conservation_schedule']['scheduled_work_orders']} work orders scheduled")
+        print(f"📊 Data Quality: {warehouse_data['visitor_mart']['data_quality']:.0%} average across marts")
+        print(f"📈 Dashboards Created: {len(reports)} terminal reporting assets")
+    except TypeError:
+        pass
     print("\n✅ Asset Dependency Patterns Demonstrated:")
     print("   - Isolated assets: annual_budget_upload, external_weather_data")
     print("   - Root nodes: 10 raw ingestion sources")
@@ -2160,19 +2163,24 @@ def museum_operations_flow():
     print("   - Leaf nodes: 5 terminal dashboards/reports")
     print("=" * 80)
 
-    return {
-        "duration_seconds": duration,
-        "total_visitors": visitor_data['visitor_profile']['total_visitors'],
-        "total_revenue": financial_data['financial_health']['current_revenue'],
-        "financial_health_score": financial_data['financial_health']['health_score'],
-        "data_quality": warehouse_data['visitor_mart']['data_quality'],
-        "dashboards_created": len(reports),
-        "pipeline_status": "success"
-    }
+    try:
+        return {
+            "duration_seconds": duration,
+            "total_visitors": visitor_data['visitor_profile']['total_visitors'],
+            "total_revenue": financial_data['financial_health']['current_revenue'],
+            "financial_health_score": financial_data['financial_health']['health_score'],
+            "data_quality": warehouse_data['visitor_mart']['data_quality'],
+            "dashboards_created": len(reports),
+            "pipeline_status": "success"
+        }
+    except TypeError:
+        return {}
 
 
 if __name__ == "__main__":
     # Run the master orchestration flow
-    result = museum_operations_flow()
-    print(f"\n🎊 Museum operations pipeline completed successfully!")
-    print(f"📊 Final metrics: {result}")
+    # result = museum_operations_flow()
+    # print(f"\n🎊 Museum operations pipeline completed successfully!")
+    # print(f"📊 Final metrics: {result}")
+
+    museum_operations_flow.visualize(graph_output_format="mermaid")
