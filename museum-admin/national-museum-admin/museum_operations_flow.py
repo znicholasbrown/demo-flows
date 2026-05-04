@@ -26,7 +26,7 @@ import random
 from datetime import datetime, timedelta
 from typing import List, Dict
 
-from prefect import flow, task, get_client
+from prefect import flow, task, get_client, serve
 from prefect.assets import Asset, AssetProperties, materialize
 from prefect_dask import DaskTaskRunner
 from prefect.states import Completed
@@ -2178,9 +2178,17 @@ def museum_operations_flow():
 
 
 if __name__ == "__main__":
-    # Run the master orchestration flow
-    # result = museum_operations_flow()
-    # print(f"\n🎊 Museum operations pipeline completed successfully!")
-    # print(f"📊 Final metrics: {result}")
+    graph = museum_operations_flow.visualize(graph_output_format="mermaid")
+    
+    deployment = museum_operations_flow.to_deployment(
+        "default",
+        tags=['museum', 'operations', 'analytics'],
+        description=f"""Primary orchestration flow for museum operations analytics
+```mermaid
+{graph}
+```
+""",
+        work_pool_name="managed"
+    )
 
-    museum_operations_flow.visualize(graph_output_format="mermaid")
+    serve(deployment)
